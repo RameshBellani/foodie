@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, User, Menu, Edit } from "lucide-react"; // Adding Edit icon for admin menu
 import { useAuthStore } from "../store/auth-store";
 import { useCartStore } from "../store/cart-store";
-import Foodie from '../assets/Foodie.png'
+import Foodie from "../assets/Foodie.png";
 
 export default function Navbar() {
   const { user } = useAuthStore();
@@ -15,11 +15,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <img
-              src={Foodie}
-              alt="Foodie Logo"
-              className="h-8 w-auto"
-            />
+            <img src={Foodie} alt="Foodie Logo" className="h-8 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -37,7 +33,10 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/cart" className="relative">
-              <ShoppingCart className="h-6 w-6 text-gray-700 hover:text-orange-600" />
+              <ShoppingCart
+                className="h-6 w-6 text-gray-700 hover:text-orange-600"
+                aria-hidden="true"
+              />
               {items.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-orange-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {items.length}
@@ -74,6 +73,7 @@ export default function Navbar() {
           <button
             className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             <Menu className="h-6 w-6 text-gray-700" />
           </button>

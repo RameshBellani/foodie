@@ -1,7 +1,29 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Clock, Truck } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate checking if the user is authenticated (you could use context or a store here)
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Check for token in localStorage
+    if (token) {
+      setIsAuthenticated(true);
+    }
+    setIsLoading(false);
+  }, []);
+
+  // Show a loading spinner while checking authentication
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-16">
       {/* Hero Section */}
@@ -27,13 +49,23 @@ export default function Home() {
               Experience the finest cuisine from top-rated restaurants in your area.
               Order now and satisfy your cravings!
             </p>
-            <Link
-              to="/menu"
-              className="inline-flex items-center bg-orange-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-orange-700 transition-colors"
-            >
-              Explore Menu
-              <ArrowRight className="ml-2" />
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                to="/menu"
+                className="inline-flex items-center bg-orange-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-orange-700 transition-colors"
+              >
+                Explore Menu
+                <ArrowRight className="ml-2" />
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="inline-flex items-center bg-orange-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-orange-700 transition-colors"
+              >
+                Log in to Explore Menu
+                <ArrowRight className="ml-2" />
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -75,51 +107,35 @@ export default function Home() {
           Featured Dishes
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              name: 'Classic Burger',
-              image:
-                'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80',
-              price: 499.99,
-            },
-            {
-              name: 'Margherita Pizza',
-              image:
-                'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80',
-              price: 349.99,
-            },
-            {
-              name: 'Caesar Salad',
-              image:
-                'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&q=80',
-              price: 129.99,
-            },
-          ].map((dish, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-            >
-              <img
-                src={dish.image}
-                alt={dish.name}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2">{dish.name}</h3>
-                <div className="flex justify-between items-center">
-                  <span className="text-orange-600 font-bold">
-                  ₹{dish.price.toFixed(2)}
-                  </span>
-                  <Link
-                    to="/menu"
-                    className="text-orange-600 hover:text-orange-700 font-semibold"
-                  >
-                    Order Now
-                  </Link>
+          {[{ name: 'Classic Burger', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80', price: 499.99 },
+            { name: 'Margherita Pizza', image: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80', price: 349.99 },
+            { name: 'Caesar Salad', image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&q=80', price: 129.99 }]
+            .map((dish, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-md overflow-hidden"
+              >
+                <img
+                  src={dish.image}
+                  alt={dish.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold mb-2">{dish.name}</h3>
+                  <div className="flex justify-between items-center">
+                    <span className="text-orange-600 font-bold">
+                      ₹{dish.price.toFixed(2)}
+                    </span>
+                    <Link
+                      to={isAuthenticated ? "/menu" : "/login"}
+                      className="text-orange-600 hover:text-orange-700 font-semibold"
+                    >
+                      Order Now
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </section>
     </div>
