@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, User, Menu } from "lucide-react";
+import { ShoppingCart, User, Menu, Edit } from "lucide-react"; // Adding Edit icon for admin menu
 import { useAuthStore } from "../store/auth-store";
 import { useCartStore } from "../store/cart-store";
 import Foodie from '../assets/Foodie.png'
@@ -57,6 +57,17 @@ export default function Navbar() {
                 Login
               </Link>
             )}
+
+            {/* Admin Navigation Button (Visible only for admins) */}
+            {user?.role === "admin" && (
+              <Link
+                to="/admin/menu"
+                className="text-gray-700 hover:text-orange-600 flex items-center"
+              >
+                <Edit className="h-6 w-6 text-gray-700 hover:text-orange-600 mr-2" />
+                Admin Menu
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -108,6 +119,16 @@ export default function Navbar() {
                 className="block py-2 text-gray-700 hover:text-orange-600"
               >
                 Login
+              </Link>
+            )}
+
+            {/* Admin Navigation in Mobile */}
+            {user?.role === "admin" && (
+              <Link
+                to="/admin/menu"
+                className="block py-2 text-gray-700 hover:text-orange-600"
+              >
+                Admin Menu
               </Link>
             )}
           </div>

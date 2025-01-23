@@ -8,9 +8,26 @@ interface AuthState {
   setLoading: (loading: boolean) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isLoading: true,
-  setUser: (user) => set({ user }),
-  setLoading: (loading) => set({ isLoading: loading }),
-}));
+export const useAuthStore = create<AuthState>((set) => {
+  // Try to load user from localStorage
+  const storedUser = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
+
+  // If there's a stored token and user, assume the user is logged in
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const isLoading = !user && !token; // Set loading if there's no user or token
+
+  return {
+    user,
+    isLoading,
+    setUser: (user) => {
+      set({ user });
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user)); // Save user to localStorage
+      } else {
+        localStorage.removeItem('user'); // Remove user from localStorage on logout
+      }
+    },
+    setLoading: (loading) => set({ isLoading: loading }),
+  };
+});

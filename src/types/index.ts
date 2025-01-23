@@ -16,17 +16,19 @@ export interface User {
     isDefault: boolean;
   }
   
-  export interface MenuItem {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    image: string;
-    category: string;
-    available: boolean;
-    rating: number;
-    reviews: Review[];
-  }
+  // In your types/index.ts
+export interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  available: boolean;
+  rating: number;
+  reviews?: string[]; // Make reviews optional
+}
+
   
   export interface Review {
     id: string;

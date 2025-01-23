@@ -10,6 +10,10 @@ import Contact from '../pages/Contact';
 import AddAddress from '../pages/AddAddress';
 import Checkout from '../pages/Checkout';
 import Orders from '../pages/Orders';
+import AdminOrdersPage from '../pages/Admin'; 
+import AdminMenuPage from '../pages/AdminMenuPage'; 
+import CreateMenuItem from '../pages/CreateMenuItem'; 
+import UpdateMenuItem from '../pages/UpdateMenuItem'; 
 import ProtectedRoute from './ProtectedRoute';
 
 export default function AppRoutes() {
@@ -58,6 +62,39 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <Orders />
+          </ProtectedRoute>
+        }
+      />
+      {/* Admin Routes */}
+      <Route
+        path="/admin/orders"
+        element={
+          <ProtectedRoute isAdminRoute>
+            <AdminOrdersPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/menu"
+        element={
+          <ProtectedRoute isAdminRoute>
+            <AdminMenuPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/menu/create"
+        element={
+          <ProtectedRoute isAdminRoute>
+            <CreateMenuItem />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/menu/:id/edit"
+        element={
+          <ProtectedRoute isAdminRoute>
+            <UpdateMenuItem />
           </ProtectedRoute>
         }
       />

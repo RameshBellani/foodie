@@ -18,28 +18,49 @@ export default function AddAddress() {
   const { user, setUser } = useAuthStore();
   const { register, handleSubmit, formState: { errors } } = useForm<AddressForm>();
 
-  const onSubmit = (data: AddressForm) => {
+  const onSubmit = async (data: AddressForm) => {
     if (!user) return;
 
     const newAddress: Address = {
       id: `addr_${Date.now()}`,
-      ...data
+      ...data,
     };
 
     const updatedAddresses = [...(user.addresses || [])];
-    
+
     if (data.isDefault) {
-      updatedAddresses.forEach(addr => addr.isDefault = false);
+      updatedAddresses.forEach((addr) => (addr.isDefault = false));
     }
     updatedAddresses.push(newAddress);
 
-    setUser({
-      ...user,
-      addresses: updatedAddresses
-    });
+    // Update user profile on the backend
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:5000/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...user,
+          addresses: updatedAddresses,
+        }),
+      });
 
-    toast.success('Address added successfully');
-    navigate('/profile');
+      const result = await response.json();
+
+      if (response.ok) {
+        setUser(result.user);
+        toast.success('Address added successfully');
+        navigate('/profile');
+      } else {
+        throw new Error(result.message || 'Failed to update address');
+      }
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.message || 'An error occurred while adding the address');
+    }
   };
 
   return (
@@ -112,8 +133,8 @@ export default function AddAddress() {
                 required: 'ZIP code is required',
                 pattern: {
                   value: /^\d{5}(-\d{4})?$/,
-                  message: 'Invalid ZIP code format'
-                }
+                  message: 'Invalid ZIP code format',
+                },
               })}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               placeholder="Enter ZIP code"

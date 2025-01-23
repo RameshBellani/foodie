@@ -1,25 +1,67 @@
-
-import { useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
-import { auth } from '../lib/firebase';
-import { useAuthStore } from '../store/auth-store';
-import { toast } from 'react-hot-toast';
-import { User, LogOut, MapPin, Clock } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../lib/firebase";
+import { useAuthStore } from "../store/auth-store";
+import { toast } from "react-hot-toast";
+import { User, LogOut, MapPin, Clock } from "lucide-react";
 
 export default function Profile() {
   const navigate = useNavigate();
   const { user, setUser } = useAuthStore();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          toast.error("No token found, please log in again");
+          navigate("/login");
+          return;
+        }
+
+        const response = await fetch(
+          "http://localhost:5000/api/users/profile",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (response.ok) {
+          setUser(result.user);
+        } else {
+          toast.error(result.message || "Failed to fetch profile");
+        }
+      } catch (error) {
+        toast.error("An error occurred while fetching your profile");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [setUser, navigate]);
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
       setUser(null);
-      toast.success('Signed out successfully');
-      navigate('/login');
+      toast.success("Signed out successfully");
+      navigate("/login");
     } catch (error) {
-      toast.error('Failed to sign out');
+      toast.error("Failed to sign out");
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -43,9 +85,12 @@ export default function Profile() {
             </div>
             {user?.addresses && user.addresses.length > 0 ? (
               <div className="space-y-3">
-                {user.addresses.map((address) => (
+                {user.addresses.map((address, index) => (
                   <div
-                    key={address.id}
+                    key={
+                      address.id ||
+                      `${address.street}-${address.zipCode}-${index}`
+                    } // Unique key fallback
                     className="bg-white p-3 rounded-md shadow-sm"
                   >
                     <p className="font-medium">{address.street}</p>
@@ -64,7 +109,7 @@ export default function Profile() {
               <p className="text-gray-600">No addresses saved yet</p>
             )}
             <button
-              onClick={() => navigate('/address/new')}
+              onClick={() => navigate("/address/new")}
               className="mt-4 w-full bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700 transition-colors"
             >
               Add New Address
@@ -77,9 +122,14 @@ export default function Profile() {
               <Clock className="w-5 h-5 text-orange-600" />
               <h3 className="text-lg font-semibold">Recent Orders</h3>
             </div>
-            <p className="text-gray-600">No orders yet</p>
+              <button
+                onClick={() => navigate('/orders')}
+                className="mt-4 w-full bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700 transition-colors"
+              >
+                View Orders
+              </button>
           </div>
-        </div>
+          </div>
 
         <button
           onClick={handleSignOut}

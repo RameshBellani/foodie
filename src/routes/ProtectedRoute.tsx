@@ -4,9 +4,10 @@ import { useAuthStore } from '../store/auth-store';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  isAdminRoute?: boolean; // Add this line to accept the isAdminRoute prop
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, isAdminRoute }: ProtectedRouteProps) {
   const { user, isLoading } = useAuthStore();
 
   if (isLoading) {
@@ -19,6 +20,10 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (isAdminRoute && user.role !== 'admin') {
+    return <Navigate to="/profile" replace />; // Redirect to profile if not admin
   }
 
   return <>{children}</>;

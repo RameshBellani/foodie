@@ -1,4 +1,3 @@
-
 import { useNavigate } from 'react-router-dom';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useCartStore } from '../store/cart-store';

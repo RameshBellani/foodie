@@ -1,8 +1,5 @@
-
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../lib/firebase';
 import { toast } from 'react-hot-toast';
 import { useAuthStore } from '../store/auth-store';
 
@@ -17,33 +14,50 @@ export default function Login() {
   const setUser = useAuthStore((state) => state.setUser);
 
   const onSubmit = async (data: LoginForm) => {
+    useAuthStore.setState({ isLoading: true });
+
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-  
-      setUser({
-        id: userCredential.user.uid,
-        email: userCredential.user.email!,
-        name: userCredential.user.displayName || 'User',
-        role: 'user',
-        addresses: []
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
-  
-      useAuthStore.setState({ isLoading: false }); // Ensure loading is updated
-  
+
+      if (!response.ok) {
+        throw new Error('Invalid email or password');
+      }
+
+      const result = await response.json();
+
+      // Store the token in local storage or state
+      localStorage.setItem('token', result.token);
+
+      // Set user state
+      setUser({
+        id: '',  // No user ID returned from the login API
+        email: data.email,
+        name: 'User',
+        phone: '',  // No phone returned from login response
+        role: 'user',
+        addresses: [],
+      });
+
       toast.success('Successfully logged in!');
       navigate('/');
-    } catch (error) {
-      useAuthStore.setState({ isLoading: false }); // Stop loading on error
-      toast.error('Invalid email or password');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to login');
+    } finally {
+      useAuthStore.setState({ isLoading: false });
     }
   };
-  
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6">Welcome Back</h2>
-        
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -52,18 +66,16 @@ export default function Login() {
             <input
               type="email"
               id="email"
-              {...register('email', { 
+              {...register('email', {
                 required: 'Email is required',
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address'
-                }
+                  message: 'Invalid email address',
+                },
               })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-            )}
+            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
           </div>
 
           <div>
@@ -73,18 +85,16 @@ export default function Login() {
             <input
               type="password"
               id="password"
-              {...register('password', { 
+              {...register('password', {
                 required: 'Password is required',
                 minLength: {
                   value: 6,
-                  message: 'Password must be at least 6 characters'
-                }
+                  message: 'Password must be at least 6 characters',
+                },
               })}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-            )}
+            {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
           </div>
 
           <button
