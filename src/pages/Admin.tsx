@@ -179,7 +179,7 @@ const AdminOrdersPage = () => {
           return;
         }
   
-        const response = await fetch("http://localhost:5000/api/orders", {
+        const response = await fetch("https://foodie-backend-hdas.onrender.com/api/orders", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -221,7 +221,7 @@ const AdminOrdersPage = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const response = await fetch(`https://foodie-backend-hdas.onrender.com/api/orders/${orderId}/status`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

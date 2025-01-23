@@ -10,7 +10,7 @@ export default function AdminMenuPage() {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/menu');
+        const response = await fetch('https://foodie-backend-hdas.onrender.com/api/menu');
         const data = await response.json();
         setMenuItems(data);
       } catch (error) {

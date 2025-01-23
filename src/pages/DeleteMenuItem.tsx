@@ -7,7 +7,7 @@ export default function DeleteMenuItem({ id }: { id: string }) {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/menu/${id}`, {
+      const response = await fetch(`https://foodie-backend-hdas.onrender.com/api/menu/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

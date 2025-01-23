@@ -33,7 +33,7 @@ export default function Menu() {
       setLoading(true);
       setError('');
       try {
-        const response = await fetch('http://localhost:5000/api/menu');
+        const response = await fetch('https://foodie-backend-hdas.onrender.com/api/menu');
         if (!response.ok) {
           throw new Error('Failed to fetch menu items');
         }

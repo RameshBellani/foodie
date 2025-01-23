@@ -18,7 +18,7 @@ export default function UpdateMenuItem() {
   useEffect(() => {
     const fetchMenuItem = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/menu/${id}`);
+        const response = await fetch(`https://foodie-backend-hdas.onrender.com/api/menu/${id}`);
         const data = await response.json();
         setMenuItem(data);
         setName(data.name);
@@ -50,7 +50,7 @@ export default function UpdateMenuItem() {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/api/menu/${id}`, {
+      const response = await fetch(`https://foodie-backend-hdas.onrender.com/api/menu/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

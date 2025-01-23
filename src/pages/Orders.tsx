@@ -259,7 +259,7 @@ export default function Orders() {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:5000/api/orders", {
+        const response = await fetch("https://foodie-backend-hdas.onrender.com/api/orders", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -280,7 +280,7 @@ export default function Orders() {
     const fetchMenuItemNames = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:5000/api/menu", {
+        const response = await fetch("https://foodie-backend-hdas.onrender.com/api/menu", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

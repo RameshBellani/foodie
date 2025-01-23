@@ -22,7 +22,7 @@ export default function Profile() {
         }
 
         const response = await fetch(
-          "http://localhost:5000/api/users/profile",
+          "https://foodie-backend-hdas.onrender.com/api/users/profile",
           {
             method: "GET",
             headers: {
