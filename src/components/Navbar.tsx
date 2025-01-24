@@ -11,8 +11,8 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <nav className="bg-white shadow-lg">
-      <div className="container mx-auto px-4">
+    <nav className="bg-white shadow-lg fixed top-0 left-0 w-full z-50">
+      <div className="container mt-16 mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
             <img src={Foodie} alt="Foodie Logo" className="h-8 w-auto" />
