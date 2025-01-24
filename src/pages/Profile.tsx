@@ -59,9 +59,17 @@ export default function Profile() {
     }
   };
 
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
   if (loading) {
-    return <div>Loading...</div>;
-  }
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+}
+
 
   return (
     <div className="max-w-4xl mx-auto">
