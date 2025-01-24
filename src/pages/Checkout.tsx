@@ -228,9 +228,17 @@ export default function Checkout() {
   const finalTotal = subtotal + tax + DELIVERY_FEE;
 
   // Redirect to login if user is not logged in
-  if (isLoading) {
-    return <div>Loading...</div>; // Or a loading spinner
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>; // Or a loading spinner
+  // }
+if (isLoading) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+}
+
 
   if (!user) {
     toast.error('You must be logged in to place an order');
