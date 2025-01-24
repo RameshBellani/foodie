@@ -640,7 +640,7 @@ export default function Orders() {
                 })}
               </div>
 
-              <div className="border-t pt-4">
+{/*               <div className="border-t pt-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-medium">Delivery Address:</span>
                   <span className="text-gray-600">
@@ -656,7 +656,25 @@ export default function Orders() {
                   <span>Total:</span>
                   <span>{formatPrice(order.total)}</span>
                 </div>
-              </div>
+              </div> */}
+              <div className="border-t pt-4">
+  <div className="flex justify-between items-center mb-2">
+    <span className="font-medium">Delivery Address:</span>
+    <span className="text-gray-600">
+      {order.address?.street}, {order.address?.city}, {order.address?.state}{" "}
+      {order.address?.zipCode}
+    </span>
+  </div>
+  <div className="flex justify-between items-center mb-4">
+    <span className="font-medium">Payment Method:</span>
+    <span className="capitalize text-gray-600">{order.paymentMethod}</span>
+  </div>
+  <div className="flex justify-between items-center text-lg font-semibold">
+    <span>Total:</span>
+    <span>{formatPrice(order.total)}</span>
+  </div>
+</div>
+
 
               {order.status === "delivered" && (
                 <div className="mt-6">
