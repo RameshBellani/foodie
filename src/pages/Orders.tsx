@@ -697,11 +697,12 @@ const StatusIcon = ({ status }: { status: string }) => {
 //     </div>
 //   );
 // }
+
 // Order history page
 export default function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [menuItems, setMenuItems] = useState<Map<string, MenuItem>>(new Map()); // Store menuItem ID -> {name, price, image}
+  const [menuItems, setMenuItems] = useState<Map<string, MenuItem>>(new Map());
 
   // Fetch orders from the API
   useEffect(() => {
@@ -743,8 +744,8 @@ export default function Orders() {
         menuData.forEach((item: any) => {
           itemMap.set(item._id, {
             name: item.name,
-            price: item.price, // Adding price
-            image: item.image, // Adding image URL
+            price: item.price,
+            image: item.image,
           });
         });
         setMenuItems(itemMap);
@@ -833,6 +834,7 @@ export default function Orders() {
               </div>
 
               <div className="border-t pt-4">
+                {/* Displaying address correctly */}
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-medium">Delivery Address:</span>
                   <span className="text-gray-600">
@@ -840,6 +842,7 @@ export default function Orders() {
                     {order.address?.zipCode}
                   </span>
                 </div>
+
                 <div className="flex justify-between items-center mb-4">
                   <span className="font-medium">Payment Method:</span>
                   <span className="capitalize text-gray-600">{order.paymentMethod}</span>
@@ -871,4 +874,3 @@ export default function Orders() {
     </div>
   );
 }
-
