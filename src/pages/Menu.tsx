@@ -80,9 +80,17 @@ export default function Menu() {
     toast.success(`${item.name} added to cart!`);
   };
 
+  // if (loading) {
+  //   return <div className="text-center py-12">Loading menu items...</div>;
+  // }
   if (loading) {
-    return <div className="text-center py-12">Loading menu items...</div>;
-  }
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+}
+
 
   if (error) {
     return <div className="text-center py-12 text-red-600">{error}</div>;
