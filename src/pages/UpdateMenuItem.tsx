@@ -69,7 +69,15 @@ export default function UpdateMenuItem() {
     }
   };
 
-  if (!menuItem) return <div>Loading...</div>;
+  // if (!menuItem) return <div>Loading...</div>;
+  if (!menuItem) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+}
+
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
