@@ -23,9 +23,17 @@ export default function AdminMenuPage() {
     fetchMenuItems();
   }, []);
 
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
   if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+}
+
 
   return (
     <div className="container mx-auto p-4">
