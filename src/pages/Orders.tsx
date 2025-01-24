@@ -205,19 +205,19 @@ import { Link } from "react-router-dom";
 import { Clock, Package, Truck, CheckCircle } from "lucide-react";
 import { formatPrice } from "../lib/utils";
 
-// interface OrderItem {
-//   menuItem: string; // menu_id
-//   name: string; // Name of the item (this should be fetched if not present)
-//   quantity: number;
-// }
 interface OrderItem {
-  menuItem: {
-    id: string;
-    name: string;
-    image: string;
-  };
+  menuItem: string; // menu_id
+  name: string; // Name of the item (this should be fetched if not present)
   quantity: number;
 }
+// interface OrderItem {
+//   menuItem: {
+//     id: string;
+//     name: string;
+//     image: string;
+//   };
+//   quantity: number;
+// }
 
 
 interface Order {
@@ -374,16 +374,16 @@ export default function Orders() {
                     className="flex justify-between items-center"
                   >
                     <div className="flex items-center gap-4">
-{/*                       <img
+                      <img
                         src={`https://example.com/images/${item.menuItem}.jpg`} // Assuming images are named with the menuItem ID
                         alt={`Item ${item.menuItem}`}
                         className="w-16 h-16 object-cover rounded-md"
-                      /> */}
-                      <img
+                      />
+{/*                       <img
   src={item.menuItem.image}  // Directly use the image URL from backend
   alt={item.menuItem.name}
   className="w-16 h-16 object-cover rounded-md"
-/>
+/> */}
 
                       <div>
                         <h3 className="font-medium">
