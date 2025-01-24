@@ -247,9 +247,17 @@ const AdminOrdersPage = () => {
   };
 
   // Loading and error handling
+  // if (loading) {
+  //   return <div className="text-center py-12">Loading orders...</div>;
+  // }
   if (loading) {
-    return <div className="text-center py-12">Loading orders...</div>;
-  }
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+}
+
 
   if (error) {
     return <div className="text-center py-12">{error}</div>;
